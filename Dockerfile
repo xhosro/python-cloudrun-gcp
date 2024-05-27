@@ -20,8 +20,5 @@ COPY . /app/
 # Expose the port the app runs on
 EXPOSE 8080
 
-# Set environment variable for Flask
-ENV FLASK_APP=app.py
-
-# Command to run the Flask application
-CMD ["flask", "run", "--host=0.0.0.0", "--port=8080"]
+# Command to run the Flask application using Werkzeug
+CMD ["python", "app.py"]

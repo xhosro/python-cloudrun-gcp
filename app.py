@@ -2,6 +2,7 @@ from flask import Flask, render_template, request
 import requests
 import var
 import os
+from werkzeug.serving import run_simple
 
 app = Flask(__name__)
 
@@ -15,7 +16,7 @@ def get_weather(api_key, city):
 
     try:
         response = requests.get(base_url, params=params)
-        response.raise_for_status()  # Raise an exception for HTTP errors
+        response.raise_for_status()
         return response.json()
     except requests.exceptions.RequestException as e:
         print(f"Error fetching weather data: {e}")
@@ -31,7 +32,7 @@ def get_forecast(api_key, city):
 
     try:
         response = requests.get(base_url, params=params)
-        response.raise_for_status()  # Raise an exception for HTTP errors
+        response.raise_for_status()
         return response.json()
     except requests.exceptions.RequestException as e:
         print(f"Error fetching forecast data: {e}")
@@ -58,4 +59,4 @@ def index():
     return render_template('index.html', weather_data=weather_data, forecast_data=forecast_data, error_message=error_message)
 
 if __name__ == "__main__":
-    app.run(port=int(os.environ.get("PORT", 8080)), host='0.0.0.0', debug=True)
+    run_simple('0.0.0.0', int(os.environ.get("PORT", 8080)), app, use_debugger=True)
